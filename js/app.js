@@ -3,7 +3,9 @@
  */
 const cards = document.querySelectorAll('.card');
 const resetBtn = document.querySelector('.restart');
+const moveCounter = document.querySelector('.moves');
 let openCards = [];
+let moves = 0;
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -14,7 +16,7 @@ let openCards = [];
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -28,22 +30,28 @@ function shuffle(array) {
 }
 
 // shuffle cards
-let deck = document.querySelector('.deck'), i;
-for ( i = deck.children.length; i >= 0; i--) {
-  deck.appendChild(deck.children[Math.random() * i | 0]);
+function newGame() {
+  let deck = document.querySelector('.deck'), i;
+  for ( i = deck.children.length; i >= 0; i--) {
+    deck.appendChild(deck.children[Math.random() * i | 0]);
+  }
+  moves = 0;
+  moveCounter.innerText = moves;
 }
 
-/*
+newGame();
+startTimer();
 //flipping cards
 cards.forEach(function(card) {
   card.addEventListener('click', function(e) {
     if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
       openCards.push(card);
       card.classList.add('open', 'show');
-      //match cards
+
+      //matched cards
       const x = openCards.length;
       if (x === 2) {
-        if(openCards[0].innerHTML === openCards[1].innerHTML) { // -----
+        if(openCards[0].innerHTML === openCards[1].innerHTML) {
           openCards[0].classList.add('match');
           openCards[1].classList.add('match');
           openCards[0].classList.remove('show', 'open');
@@ -58,21 +66,36 @@ cards.forEach(function(card) {
             openCards = [];
           }, 1000);
         }
+
+        moves += 1;
+        moveCounter.innerText = moves;
       }
     }
   });
 });
-*/
+
+
+function startTimer() {
+  s = setInterval(control,500);
+}
+
+function stopTimer(){
+  clearInterval(s);
+}
+
+
+//restart button
+resetBtn.addEventListener('click', function() {
+  //clearTimer();
+  newGame();
+  //startTimer();
+});
+
+
+
 
 
 /*
-//6 restart button
-resetBtn.addEventListener('click', function() {
-  clearTimer();
-  newGame();
-  startTimer();
-});
-
 //7 congratulation modal
 function endGame() {
   if (openCards.length === 16) {
@@ -82,12 +105,6 @@ function endGame() {
 */
 
 
-/*
-resetBtn.addEventListener('click', function() {
-  clearTimer();
-  startTimer();
-});
-*/
 
 
 
@@ -95,15 +112,11 @@ resetBtn.addEventListener('click', function() {
 
 
 
-/*
 
 
-/*
-//compare cards
-function compareCards() {}
 
 
-function gameOver() {}
+//function gameOver() {}
 //3move counter
 
 
@@ -115,7 +128,6 @@ function gameOver() {}
 
 
 
-*/
 
 
 
