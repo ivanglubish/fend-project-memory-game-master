@@ -2,10 +2,12 @@
  * Create a list that holds all of your cards
  */
 const cards = document.querySelectorAll('.card');
-const resetBtn = document.querySelector('.restart');
+const reset = document.querySelector('.restart');
 const moveCounter = document.querySelector('.moves');
 let openCards = [];
 let moves = 0;
+//let deck = document.querySelector('.deck'), i;
+//let stars = document.querySelector('stars');
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -37,16 +39,19 @@ function newGame() {
   }
   moves = 0;
   moveCounter.innerText = moves;
+  //startTimer();
 }
 
 newGame();
-startTimer();
+
 //flipping cards
 cards.forEach(function(card) {
   card.addEventListener('click', function(e) {
     if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
       openCards.push(card);
       card.classList.add('open', 'show');
+
+
 
       //matched cards
       const x = openCards.length;
@@ -69,31 +74,52 @@ cards.forEach(function(card) {
 
         moves += 1;
         moveCounter.innerText = moves;
+        removeStars();
+
       }
     }
   });
 });
 
-
+/*
 function startTimer() {
-  s = setInterval(control,500);
+  const time = setInterval(cards, 1000);
+  console.log();
 }
-
+*/
+/*
 function stopTimer(){
   clearInterval(s);
 }
-
+*/
 
 //restart button
-resetBtn.addEventListener('click', function() {
+reset.addEventListener('click', function() {
   //clearTimer();
   newGame();
   //startTimer();
 });
 
+function removeStars() {
+  if (moves > 1) {
+    let stars = document.querySelector('.stars');
+    let elements = stars.getElementsByClassName('fa fa-star');
+    while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+}
+}
+  /*  for (i = 0; i < 3; i++) {
+    let list = document.querySelector('stars');
+    list.removeChild(list.childNodes[0]);
+  }
 
+    //let d_stars = document.querySelectorAll('fa fa-star');
+    //let del = stars.removeChild(d_stars);
+  //}
+}
 
-
+*/
 
 /*
 //7 congratulation modal
