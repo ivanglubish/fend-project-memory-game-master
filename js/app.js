@@ -2,19 +2,17 @@
  * Create a list that holds all of your cards
  */
 const cards = document.querySelectorAll('.card');
-const reset = document.querySelector('.restart');
+//const reset = document.querySelector('.restart');
 const moveCounter = document.querySelector('.moves');
 let openCards = [];
 let moves = 0;
-//let deck = document.querySelector('.deck'), i;
-//let stars = document.querySelector('stars');
+const stars = document.querySelector('.stars');
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -39,10 +37,11 @@ function newGame() {
   }
   moves = 0;
   moveCounter.innerText = moves;
-  //startTimer();
+
 }
 
 newGame();
+
 
 //flipping cards
 cards.forEach(function(card) {
@@ -50,8 +49,6 @@ cards.forEach(function(card) {
     if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
       openCards.push(card);
       card.classList.add('open', 'show');
-
-
 
       //matched cards
       const x = openCards.length;
@@ -63,7 +60,7 @@ cards.forEach(function(card) {
           openCards[1].classList.remove('show', 'open');
           openCards = [];
 
-        } else {
+        } else { //unmatched cards
           setTimeout(function() {
             openCards.forEach(function(card) {
               card.classList.remove('open', 'show');
@@ -72,89 +69,78 @@ cards.forEach(function(card) {
           }, 1000);
         }
 
+
         moves += 1;
         moveCounter.innerText = moves;
-        removeStars();
 
+        removeStars();
       }
     }
   });
 });
 
-/*
-function startTimer() {
-  const time = setInterval(cards, 1000);
-  console.log();
+//stars raiting
+function removeStars() {
+  if (moves === 8 || moves === 13) {
+    stars.removeChild(stars.lastElementChild);
+  }
 }
-*/
-/*
-function stopTimer(){
-  clearInterval(s);
-}
-*/
 
 //restart button
-reset.addEventListener('click', function() {
-  //clearTimer();
-  newGame();
-  //startTimer();
+
+setTimeout(function restart() {
+  const reset = document.querySelector('.restart');
+  reset.addEventListener('click', function(event) {
+    for ( let i = 0; i < cards.length; i++) {
+      cards[i].classList.remove('match');
+    }
+    openCards.forEach(function(card) {
+      card.classList.remove('open', 'show');
+    });
+    clearTimer();
+    newGame();
+    startTimer();
+  });
 });
 
-function removeStars() {
-  if (moves > 1) {
-    let stars = document.querySelector('.stars');
-    let elements = stars.getElementsByClassName('fa fa-star');
-    while (elements[0]) {
-    elements[0].parentNode.removeChild(elements[0]);
-  }
-}
-}
-  /*  for (i = 0; i < 3; i++) {
-    let list = document.querySelector('stars');
-    list.removeChild(list.childNodes[0]);
-  }
 
-    //let d_stars = document.querySelectorAll('fa fa-star');
-    //let del = stars.removeChild(d_stars);
-  //}
+let second = 0;
+let minute = 0;
+let timer = document.querySelector('.timer');
+let interval;
+function startTimer() {
+  interval = setInterval(function() {
+    timer.innerHTML = minute + 'min ' + second + 'sec';
+    second++;
+    if (second === 60) {
+      minute++;
+      second = 0;
+    }
+    if (minute === 60) {
+      hour++;
+      minute = 0;
+    }
+  }, 1000);
 }
 
-*/
+
+function clearTimer() {
+  clearInterval(interval);
+}
+
+
 
 /*
 //7 congratulation modal
 function endGame() {
   if (openCards.length === 16) {
-    document.getElementrById('win').innerHTML = 'YOU WON, CONGRATULATION \n play again press Restart';
+    alert('YOU WON, CONGRATULATION \n play again press Restart');
   }
 }
 */
-
-
-
-
-
-
-
-
-
-
-
-
+//document.getElementrById('win').innerHTML =
 
 //function gameOver() {}
-//3move counter
-
-
-//4 star raiting
-
-
-
-//5 timer
-
-
-
-
 
 
 
