@@ -2,7 +2,7 @@
  * Create a list that holds all of your cards
  */
 const cards = document.querySelectorAll('.card');
-//const reset = document.querySelector('.restart');
+const reset = document.querySelector('.restart');
 const moveCounter = document.querySelector('.moves');
 let openCards = [];
 let moves = 0;
@@ -42,7 +42,6 @@ function newGame() {
 
 newGame();
 
-
 //flipping cards
 cards.forEach(function(card) {
   card.addEventListener('click', function(e) {
@@ -52,6 +51,9 @@ cards.forEach(function(card) {
 
       //matched cards
       const x = openCards.length;
+      if (x == 1 && moves < 1){
+          startTimer();
+        }
       if (x === 2) {
         if(openCards[0].innerHTML === openCards[1].innerHTML) {
           openCards[0].classList.add('match');
@@ -69,25 +71,24 @@ cards.forEach(function(card) {
           }, 1000);
         }
 
-
         moves += 1;
         moveCounter.innerText = moves;
 
         removeStars();
       }
     }
+    endGame();
   });
 });
 
 //stars raiting
 function removeStars() {
-  if (moves === 8 || moves === 13) {
+  if (moves === 10 || moves === 14) {
     stars.removeChild(stars.lastElementChild);
   }
 }
 
 //restart button
-
 setTimeout(function restart() {
   const reset = document.querySelector('.restart');
   reset.addEventListener('click', function(event) {
@@ -97,52 +98,51 @@ setTimeout(function restart() {
     openCards.forEach(function(card) {
       card.classList.remove('open', 'show');
     });
-    clearTimer();
     newGame();
+    clearTimer();
     startTimer();
   });
 });
 
-
-let second = 0;
-let minute = 0;
+//start timer
+let sec = 0;
+let min = 0;
 let timer = document.querySelector('.timer');
-let interval;
+let y;
 function startTimer() {
-  interval = setInterval(function() {
-    timer.innerHTML = minute + 'min ' + second + 'sec';
-    second++;
-    if (second === 60) {
-      minute++;
-      second = 0;
+  y = setInterval(function() {
+//    timer.innerHTML = min + 'min ' + sec + 'sec';
+    sec++;
+    if (sec === 60) {
+      min++;
+      sec = 0;
     }
-    if (minute === 60) {
-      hour++;
-      minute = 0;
+    if (min === 60) {
+      hit++;
+      min = 0;
     }
   }, 1000);
 }
 
-
 function clearTimer() {
-  clearInterval(interval);
+  clearInterval(y);
+  sec = 0;
+  min = 0;
 }
 
 
 
-/*
-//7 congratulation modal
+
+//congratulation modal
 function endGame() {
-  if (openCards.length === 16) {
-    alert('YOU WON, CONGRATULATION \n play again press Restart');
+  let muv = document.querySelector('.moves');
+  let z = document.querySelectorAll('.match');
+  let finalStars = document.querySelector('.stars').innerHTML;
+  document.getElementById('finalStars').innerHTML = finalStars;
+  if (z.length === 2) {
+    alert('YOU WON, CONGRATULATION \nyour score ' + min + ' minute ' + sec + ' seconds\n' + moveCounter.innerText + ' moves' + finalStars + '\nplay again press Restart');
   }
 }
-*/
-//document.getElementrById('win').innerHTML =
-
-//function gameOver() {}
-
-
 
 /*
  * set up the event listener for a card. If a card is clicked:
